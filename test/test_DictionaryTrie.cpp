@@ -25,3 +25,13 @@ TEST(DictTrieTests, EMPTY_TEST) {
 }
 
 /* TODO */
+TEST(DictTrieTests, insert_TEST) {
+    DictionaryTrie dict;
+    ASSERT_EQ(dict.insert("a", 10), true);
+    cout << "yes";
+    ASSERT_EQ(dict.insert("b", 10), true);
+    ASSERT_EQ(dict.find("a"), true);
+    ASSERT_EQ(dict.find("abcc"), false);
+    ASSERT_EQ(dict.find("b"), true);
+    // ASSERT_EQ(dict.find("ab"), true);
+}
