@@ -16,7 +16,7 @@ bool DictionaryTrie::insert(string word, unsigned int freq) {
     }
 
     if (root == nullptr) {
-        TierNode* newRoot = new TierNode(freq, word.at(0));
+        TierNode* newRoot = new TierNode(word.at(0));
         newRoot->left = nullptr;
         newRoot->median = nullptr;
         newRoot->right = nullptr;
@@ -36,22 +36,23 @@ bool DictionaryTrie::insert(string word, unsigned int freq) {
         } else if (word.at(i) > curr->singleChar) {
             curr = curr->right;
         }
-        if (i == word.length() - 1) {
+        if (i == word.length()) {
             prev->frequency = freq;
             return true;
         }
     }
     int k = i;
     while (k < word.length()) {
-        curr = new TierNode(0, word.at(k));
+        curr = new TierNode(word.at(k));
         curr->right = nullptr;
         curr->median = nullptr;
         curr->left = nullptr;
         prev = curr;
         curr = curr->median;
         k++;
-        if (k == word.length() - 1) {
+        if (k == word.length()) {
             prev->frequency = freq;
+            cout << prev->singleChar;
             return true;
         }
     }
@@ -71,14 +72,14 @@ bool DictionaryTrie::find(string word) const {
             cout << curr->singleChar << "123";
             prev = curr;
             curr = curr->median;
-            if (i == word.length() - 1 && prev->frequency != 0) {
-                return true;
-            }
             i = i + 1;
         } else if (word.at(i) < curr->singleChar) {
             curr = curr->left;
         } else if (word.at(i) > curr->singleChar) {
             curr = curr->right;
+        }
+        if (i == word.length() && prev->frequency != 0) {
+            return true;
         }
     }
 

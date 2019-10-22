@@ -27,8 +27,7 @@ class DictionaryTrie {
         TierNode* median;
         TierNode* right;
 
-        TierNode(int frequency, char singleChar)
-            : frequency(frequency), singleChar(singleChar) {}
+        TierNode(char singleChar) : frequency(0), singleChar(singleChar) {}
         //  left(nullptr),
         // median(nullptr),
         // right(nullptr)
