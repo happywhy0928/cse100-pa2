@@ -7,13 +7,83 @@
 #include <iostream>
 
 /* TODO */
-DictionaryTrie::DictionaryTrie() {}
+DictionaryTrie::DictionaryTrie() { root = nullptr; }
 
 /* TODO */
-bool DictionaryTrie::insert(string word, unsigned int freq) { return false; }
+bool DictionaryTrie::insert(string word, unsigned int freq) {
+    if (find(word) == true) {
+        return false;
+    }
 
-/* TODO */
-bool DictionaryTrie::find(string word) const { return false; }
+    if (root == nullptr) {
+        TierNode* newRoot = new TierNode(freq, word.at(0));
+        newRoot->left = nullptr;
+        newRoot->median = nullptr;
+        newRoot->right = nullptr;
+        root = newRoot;
+        cout << root->singleChar << "999";
+    }
+    TierNode* curr = root;
+    TierNode* prev = root;
+    int i = 0;
+    while (i < word.length() && curr != nullptr) {
+        if (word.at(i) == curr->singleChar) {
+            prev = curr;
+            curr = curr->median;
+            i++;
+        } else if (word.at(i) < curr->singleChar) {
+            curr = curr->left;
+        } else if (word.at(i) > curr->singleChar) {
+            curr = curr->right;
+        }
+        if (i == word.length() - 1) {
+            prev->frequency = freq;
+            return true;
+        }
+    }
+    int k = i;
+    while (k < word.length()) {
+        curr = new TierNode(0, word.at(k));
+        curr->right = nullptr;
+        curr->median = nullptr;
+        curr->left = nullptr;
+        prev = curr;
+        curr = curr->median;
+        k++;
+        if (k == word.length() - 1) {
+            prev->frequency = freq;
+            return true;
+        }
+    }
+}
+
+/*
+ */
+bool DictionaryTrie::find(string word) const {
+    if (root == nullptr) {
+        return false;
+    }
+    TierNode* curr = root;
+    TierNode* prev = root;
+    int i = 0;
+    while (i < word.length() && curr != nullptr) {
+        if (word.at(i) == curr->singleChar) {
+            cout << curr->singleChar << "123";
+            prev = curr;
+            curr = curr->median;
+            if (i == word.length() - 1 && prev->frequency != 0) {
+                return true;
+            }
+            i = i + 1;
+        } else if (word.at(i) < curr->singleChar) {
+            curr = curr->left;
+        } else if (word.at(i) > curr->singleChar) {
+            curr = curr->right;
+        }
+    }
+
+    return false;
+}
 
 /* TODO */
 vector<string> DictionaryTrie::predictCompletions(string prefix,
@@ -27,5 +97,21 @@ std::vector<string> DictionaryTrie::predictUnderscores(
     return {};
 }
 
-/* TODO */
-DictionaryTrie::~DictionaryTrie() {}
+/* delete recursively
+ */
+DictionaryTrie::~DictionaryTrie() { deleteAll(root); }
+void DictionaryTrie::deleteAll(TierNode* node) {
+    if (node == nullptr) {
+        return;
+    }
+    if (node->left != nullptr) {
+        deleteAll(node->left);
+    }
+    if (node->median != nullptr) {
+        deleteAll(node->median);
+    }
+    if (node->right != nullptr) {
+        deleteAll(node->right);
+    }
+    delete node;
+}

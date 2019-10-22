@@ -19,6 +19,23 @@ using namespace std;
 class DictionaryTrie {
   private:
     // TODO: add private members and helper methods here
+    class TierNode {
+      public:
+        char singleChar;
+        int frequency;
+        TierNode* left;
+        TierNode* median;
+        TierNode* right;
+
+        TierNode(int frequency, char singleChar)
+            : frequency(frequency), singleChar(singleChar) {}
+        //  left(nullptr),
+        // median(nullptr),
+        // right(nullptr)
+    };
+    TierNode* root;
+    void deleteAll(TierNode* node);
+
   public:
     /* TODO: add function header */
     DictionaryTrie();
