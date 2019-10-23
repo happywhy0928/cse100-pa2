@@ -96,6 +96,9 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
     else if (prefix.empty() || prefix.length() == 0)
         return to_ret;
 
+    // define vector the size of prefix
+    std::vector<char, int> char_to_num_map;
+
     TierNode* curr_trie_node = root;
     int curr_word_length = prefix.length();
     char curr_char;
@@ -131,22 +134,24 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
 
         // TODO traverse TST and find words that begin with the prefix and
         // add to pairs_list , do not worry about frequency
-        for (int i = 0; i <= 26; i++) {
+
+        /*for (int i = 0; i <= 26; i++) {
             if (curr_pair.first->data[i] == nullptr) continue;
             std::pair<TierNode*, std::string> new_pair;
             TierNode* new_pair_first = curr_pair.first->data[i];
             std::string new_pair_second = curr_pair.second + (char)(97 + i);
             new_pair = {new_pair_first, new_pair_second};
             q.push(new_pair);
-        }
+        }*/
     }
+
     // sorting based on frequency to get only numCompletions of results
     std::sort(pairs_list.begin(), pairs_list.end(),
               [](const std::pair<std::string, int>& p1,
                  const std::pair<std::string, int>& p2) {
                   return p1.second > p2.second;
               });
-
+    //
     int num_added = 0;
     int curr_ind = 0;
     // adding most frequent words to the return list or the final list
