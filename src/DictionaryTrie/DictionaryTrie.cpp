@@ -96,6 +96,9 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
     else if (prefix.empty() || prefix.length() == 0)
         return to_ret;
 
+    // define vector the size of prefix
+    std::vector<char, int> char_to_num_map;
+
     TierNode* curr_trie_node = root;
     int curr_word_length = prefix.length();
     char curr_char;
