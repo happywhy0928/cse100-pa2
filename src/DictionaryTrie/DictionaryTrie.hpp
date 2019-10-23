@@ -26,8 +26,8 @@ class DictionaryTrie {
         TierNode* left;
         TierNode* median;
         TierNode* right;
-        bool is_leaf;
-        std::vector<TierNode*> data;
+        // bool is_leaf;
+        // std::vector<TierNode*> data;
         TierNode(char singleChar) : frequency(0), singleChar(singleChar) {}
         //  left(nullptr),
         // median(nullptr),

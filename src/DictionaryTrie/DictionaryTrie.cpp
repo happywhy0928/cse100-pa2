@@ -43,14 +43,14 @@ bool DictionaryTrie::insert(string word, unsigned int freq) {
                 curr->left->median = nullptr;
                 curr->left->left = nullptr;
                 curr = curr->left;
-                i++;
+                i = i + 1;
                 while (i < word.length()) {
                     curr->median = new TierNode(word.at(i));
                     curr->median->right = nullptr;
                     curr->median->median = nullptr;
                     curr->median->left = nullptr;
                     curr = curr->median;
-                    i++;
+                    i = i + 1;
                 }
                 curr->frequency = freq;
                 break;
@@ -66,14 +66,14 @@ bool DictionaryTrie::insert(string word, unsigned int freq) {
                 curr->right->median = nullptr;
                 curr->right->left = nullptr;
                 curr = curr->right;
-                i++;
+                i = i + 1;
                 while (i < word.length()) {
                     curr->median = new TierNode(word.at(i));
                     curr->median->right = nullptr;
                     curr->median->median = nullptr;
                     curr->median->left = nullptr;
                     curr = curr->median;
-                    i++;
+                    i = i + 1;
                 }
                 curr->frequency = freq;
                 break;
@@ -85,7 +85,7 @@ bool DictionaryTrie::insert(string word, unsigned int freq) {
             } else {
                 if (curr->median) {
                     curr = curr->median;
-                    i++;
+                    i = i + 1;
                 } else {
                     while (i < word.length()) {
                         curr->median = new TierNode(word.at(i));
@@ -93,7 +93,7 @@ bool DictionaryTrie::insert(string word, unsigned int freq) {
                         curr->median->median = nullptr;
                         curr->median->left = nullptr;
                         curr = curr->median;
-                        i++;
+                        i = i + 1;
                     }
                     curr->frequency = freq;
                     break;
@@ -220,12 +220,12 @@ bool DictionaryTrie::find(string word) const {
                 return false;
             }
         } else {
-            if (i = word.length()) {
+            if (i = word.length() && node->frequency != 0) {
                 return true;
             } else {
                 if (node->median) {
                     node = node->median;
-                    i++;
+                    i = i + 1;
                 } else {
                     return false;
                 }
