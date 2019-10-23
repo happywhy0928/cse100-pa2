@@ -134,15 +134,17 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
 
         // TODO traverse TST and find words that begin with the prefix and
         // add to pairs_list , do not worry about frequency
-        for (int i = 0; i <= 26; i++) {
+
+        /*for (int i = 0; i <= 26; i++) {
             if (curr_pair.first->data[i] == nullptr) continue;
             std::pair<TierNode*, std::string> new_pair;
             TierNode* new_pair_first = curr_pair.first->data[i];
             std::string new_pair_second = curr_pair.second + (char)(97 + i);
             new_pair = {new_pair_first, new_pair_second};
             q.push(new_pair);
-        }
+        }*/
     }
+
     // sorting based on frequency to get only numCompletions of results
     std::sort(pairs_list.begin(), pairs_list.end(),
               [](const std::pair<std::string, int>& p1,
