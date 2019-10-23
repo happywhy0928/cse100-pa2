@@ -33,13 +33,18 @@ bool DictionaryTrie::insert(string word, unsigned int freq) {
         if (word.at(i) == curr->singleChar) {
             prev = curr;
             curr = curr->median;
+            //   prev->median = curr;
             i++;
         } else if (word.at(i) < curr->singleChar) {
             prev = curr;
+            // prev->left = curr;
             curr = curr->left;
+            //   prev->left = curr;
         } else if (word.at(i) > curr->singleChar) {
             prev = curr;
+            // prev->right = curr;
             curr = curr->right;
+            //   prev->right = curr;
         }
         if (i == word.length()) {
             prev->frequency = freq;
@@ -47,26 +52,69 @@ bool DictionaryTrie::insert(string word, unsigned int freq) {
         }
     }
     // create new node for the remaining characters
-    int k = i;
-    while (k < word.length()) {
-        curr = new TierNode(word.at(k));
-        cout << curr->singleChar << "135";
-        cout << prev->singleChar << "120";
-        curr->right = nullptr;
-        curr->median = nullptr;
-        curr->left = nullptr;
+    curr = new TierNode(word.at(i));
+    curr->right = nullptr;
+    curr->median = nullptr;
+    curr->left = nullptr;
+    if (word.at(i) < prev->singleChar) {
+        prev->left = curr;
         prev = curr;
         curr = curr->median;
-        k++;
-        if (root->right != nullptr) {
-            cout << root->right->singleChar << "648";
+        i++;
+    } else if (word.at(i) > prev->singleChar) {
+        prev->right = curr;
+        prev = curr;
+        curr = curr->median;
+        i++;
+    } else if (word.at(i) == prev->singleChar) {
+        prev->median = curr;
+        prev = curr;
+        curr = curr->median;
+        i++;
+        int k = i;
+        while (k < word.length()) {
+            curr = new TierNode(word.at(k));
+            cout << curr->singleChar << "135";
+            cout << prev->singleChar << "120";
+            curr->right = nullptr;
+            curr->median = nullptr;
+            curr->left = nullptr;
+            prev->median = curr;
+            prev = curr;
+            curr = curr->median;
+            k++;
         }
-        if (k == word.length()) {
-            prev->frequency = freq;
-            cout << prev->singleChar << "456";
-            return true;
-        }
+        i = k;
     }
+    if (i == word.length()) {
+        prev->frequency = freq;
+        cout << prev->singleChar << "456";
+        return true;
+    }
+    if (root->right != nullptr) {
+        cout << root->right->singleChar << "328";
+    }
+    //   int k = i;
+    //  while (k < word.length()) {
+    //    curr = new TierNode(word.at(k));
+    //  cout << curr->singleChar << "135";
+    // cout << prev->singleChar << "120";
+    //  curr->right = nullptr;
+    //  curr->median = nullptr;
+    //  curr->left = nullptr;
+    //  prev->median = curr;
+    //  prev = curr;
+    //  curr = curr->median;
+    //  k++;
+    //  if (root->right != nullptr) {
+    //     cout << root->right->singleChar << "648";
+    // }
+    //  if (k == word.length()) {
+    //    prev->frequency = freq;
+    //   cout << prev->singleChar << "456";
+    //    return true;
+    //  }
+    // }
 }
 
 /*
@@ -106,73 +154,7 @@ bool DictionaryTrie::find(string word) const {
 /* TODO */
 vector<string> DictionaryTrie::predictCompletions(string prefix,
                                                   unsigned int numCompletions) {
-    std::vector<std::string> to_ret;
-
-    if (root == NULL)
-        return to_ret;
-    else if (prefix.empty() || prefix.length() == 0)
-        return to_ret;
-
-    TierNode* curr_trie_node = root;
-    int curr_word_length = prefix.length();
-    char curr_char;
-    // mapping the prefix as an array
-    for (int i = 0; i < curr_word_length; i++) {
-        curr_char = (char)prefix[i];
-        int curr_node_index = char_to_num_map[curr_char];
-        // int curr_node_index = (int curr_char'a')
-        curr_trie_node = curr_trie_node->data[curr_node_index];
-    }
-
-    std::queue<std::pair<TierNode*, std::string>> q;
-
-    std::vector<std::pair<std::string, int>> pairs_list;
-    std::vector<std::pair<std::string, int>> to_ret;
-    std::pair<TierNode*, std::string> curr_pair;
-    curr_pair = {curr_trie_node, prefix};
-    q.push(curr_pair);
-
-    // Putting the root with the original prefix into the queue
-    while (!q.empty()) {
-        // once its stored in curr pair we pop it from queue
-        curr_pair = q.front();
-        q.pop();
-
-        // reading trie and if its a word/get a word we want to push into list
-        // with frequency
-        if (curr_pair.first->is_leaf == true) {
-            std::pair<std::string, int> updated_pair;
-            updated_pair = {curr_pair.second, curr_pair.first->frequency};
-            pairs_list.push_back(updated_pair);
-        }
-
-        // TODO traverse TST and find words that begin with the prefix and
-        // add to pairs_list , do not worry about frequency
-        for (int i = 0; i <= 26; i++) {
-            if (curr_pair.first->data[i] == nullptr) continue;
-            std::pair<TierNode*, std::string> new_pair;
-            TierNode* new_pair_first = curr_pair.first->data[i];
-            std::string new_pair_second = curr_pair.second + (char)(97 + i);
-            new_pair = {new_pair_first, new_pair_second};
-            q.push(new_pair);
-        }
-    }
-    // sorting based on frequency to get only numCompletions of results
-    std::sort(pairs_list.begin(), pairs_list.end(),
-              [](const std::pair<std::string, int>& p1,
-                 const std::pair<std::string, int>& p2) {
-                  return p1.second > p2.second;
-              });
-
-    int num_added = 0;
-    int curr_ind = 0;
-    // adding most frequent words to the return list or the final list
-    while (num_added < numCompletions && curr_ind < pairs_list.size()) {
-        to_ret.push_back(pairs_list[curr_ind].first);
-        num_added++;
-        curr_ind++;
-    }
-    return to_ret;
+    return {};
 }
 
 /* TODO */
