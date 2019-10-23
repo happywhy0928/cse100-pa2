@@ -149,7 +149,7 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
                  const std::pair<std::string, int>& p2) {
                   return p1.second > p2.second;
               });
-
+    //
     int num_added = 0;
     int curr_ind = 0;
     // adding most frequent words to the return list or the final list
