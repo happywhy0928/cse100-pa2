@@ -146,61 +146,39 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
         return to_ret;
     TierNode* curr = root;
     // int curr_word_length = prefix.length();
-    vector<pair<string, int>> allTheWords;
+    vector<pair<string, unsigned int>> allTheWords;
     int i = 0;
     while (curr != nullptr && i < prefix.size()) {
-        int stringCompare = prefix[i] - curr->singleChar;
-        if (prefix[i] != curr->singleChar) {
-            if (stringCompare < 0) {
-                curr = curr->left;
-            } else {
-                curr = curr->right;
-            }
-        } else {
-            if (stringCompare == prefix.size()) {
-                stringCompare++;
-            } else {
-                if (curr->frequency != 0) {
-                    allTheWords.push_back(make_pair(prefix, curr->frequency));
-                }
-                traversal(curr->median, allTheWords, prefix);
-                sort(allTheWords.begin(), allTheWords.end(), sortByFrequency);
-                if (allTheWords.size() <= numCompletions) {
-                    for (int k = 0; k < allTheWords.size(); k++) {
-                        to_ret.push_back(allTheWords[k].first);
-                    }
-                } else {
-                    for (int k = 0; k < numCompletions; k++) {
-                        to_ret.push_back(allTheWords[k].first);
-                    }
-                }
-                return to_ret;
-            }
-            stringCompare++;
+        if (prefix[i] < curr->singleChar) {
+            curr = curr->left;
+        }
+        if (prefix[i] > curr->singleChar) {
+            curr = curr->right;
+        }
+        if (prefix[i] == curr->singleChar) {
+            curr = curr->median;
+            i++;
         }
     }
-    /*// prefix not exist;
+    // prefix not exist;
     if (!curr) {
         return to_ret;
     }
     if (curr->frequency != 0) {
-        allTheWords->push_back(make_pair(prefix, curr->frequency));
+        allTheWords.push_back(make_pair(prefix, curr->frequency));
     }
     traversal(curr->median, allTheWords, prefix);
-    sort(allTheWords->begin(), allTheWords->end(), sortByFrequency);
+    sort(allTheWords.begin(), allTheWords.end(), sortByFrequency);
     int k = 0;
-    */
-    /*
-     if (allTheWords.size() <= numCompletions) {
-         for (int k = 0; k < allTheWords.size(); k++) {
-             to_ret.push_back(allTheWords[k].first);
-         }
-     } else {
-         for (int k = 0; k < numCompletions; k++) {
-             to_ret.push_back(allTheWords[k].first);
-         }
-     }
-     */
+    if (allTheWords.size() <= numCompletions) {
+        for (k = 0; k < allTheWords.size(); k++) {
+            to_ret.push_back(allTheWords[k].first);
+        }
+    } else {
+        for (k = 0; k < numCompletions; k++) {
+            to_ret.push_back(allTheWords[k].first);
+        }
+    }
     return to_ret;
 }
 
