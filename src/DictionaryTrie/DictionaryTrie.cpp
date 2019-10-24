@@ -48,7 +48,7 @@ bool DictionaryTrie::insert(string word, unsigned int freq) {
                 count++;
             }
             inputNode->frequency = freq;
-            return true;
+            break;
         } else if (inputNode->singleChar < curr->singleChar) {
             if (curr->left != nullptr) {
                 curr = curr->left;
@@ -63,7 +63,7 @@ bool DictionaryTrie::insert(string word, unsigned int freq) {
                     count++;
                 }
                 curr->frequency = freq;
-                return true;
+                break;
             }
         } else if (inputNode->singleChar > curr->singleChar) {
             if (curr->right != nullptr) {
@@ -79,7 +79,7 @@ bool DictionaryTrie::insert(string word, unsigned int freq) {
                     count++;
                 }
                 curr->frequency = freq;
-                return true;
+                break;
             }
         } else {
             if (count == word.size() - 1) {
@@ -98,12 +98,12 @@ bool DictionaryTrie::insert(string word, unsigned int freq) {
                     count++;
                     while (count < word.size()) {
                         currLetter = word[count];
-                        curr = new TierNode(currLetter);
+                        curr->median = new TierNode(currLetter);
                         curr = curr->median;
                         count++;
                     }
                     curr->frequency = freq;
-                    return true;
+                    break;
                 }
             }
         }
@@ -161,9 +161,8 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
     vector<pair<string, int>> allTheWords;
     int i = 0;
     while (curr != nullptr) {
-        int compareTheChar = prefix[i] - curr->singleChar;
         if (prefix[i] != curr->singleChar) {
-            if (compareTheChar < 0) {
+            if (prefix[i] < curr->singleChar) {
                 curr = curr->left;
             } else {
                 curr = curr->right;

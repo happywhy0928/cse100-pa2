@@ -36,6 +36,8 @@ TEST(DictTrieTests, insert_TEST) {
     ASSERT_EQ(dict.find("b"), true);
     ASSERT_EQ(dict.insert("ab", 25), true);
     ASSERT_EQ(dict.find("ab"), true);
+    dict.insert("dog", 2425);
+    dict.insert("doges", 245);
 }
 TEST(DictTrieTests, predict_TEST) {
     DictionaryTrie dict;
