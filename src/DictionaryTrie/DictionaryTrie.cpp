@@ -158,23 +158,26 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
     vector<pair<string, int>> allTheWords;
     int i = 0;
     while (curr != nullptr) {
-        if (prefix[i] < curr->singleChar) {
-            curr = curr->left;
-        } else if (prefix[i] > curr->singleChar) {
-            curr = curr->right;
+        int compareTheChar = prefix[i] - curr->singleChar;
+        if (prefix[i] != curr->singleChar) {
+            if (compareTheChar < 0) {
+                curr = curr->left;
+            } else {
+                curr = curr->right;
+            }
         } else {
-            if (i == prefix.size()) {
+            if (++i == prefix.size()) {
                 if (curr->frequency != 0) {
                     allTheWords.push_back(make_pair(prefix, curr->frequency));
                 }
+                traversal(curr->median, allTheWords, prefix);
+                sort(allTheWords.begin(), allTheWords.end(), sortByFrequency);
                 break;
             }
             curr = curr->median;
-            i++;
+            // i++;
         }
     }
-    traversal(curr->median, allTheWords, prefix);
-    sort(allTheWords.begin(), allTheWords.end(), sortByFrequency);
     if (allTheWords.size() < numCompletions) {
         for (int k = 0; k < allTheWords.size(); k++) {
             to_ret.push_back(allTheWords[k].first);
@@ -243,11 +246,11 @@ void DictionaryTrie::traversal(TierNode* node,
     }
     if (node->left != nullptr) {
         traversal(node->left, wordsets, prefix);
-
-        if (node->median != nullptr) {
-            traversal(node->median, wordsets, prefix + node->singleChar);
-        }
-        if (node->right != nullptr) {
-            traversal(node->right, wordsets, prefix);
-        }
     }
+    if (node->median != nullptr) {
+        traversal(node->median, wordsets, prefix + node->singleChar);
+    }
+    if (node->right != nullptr) {
+        traversal(node->right, wordsets, prefix);
+    }
+}

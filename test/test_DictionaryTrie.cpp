@@ -35,15 +35,15 @@ TEST(DictTrieTests, insert_TEST) {
     ASSERT_EQ(dict.find("b"), true);
     // ASSERT_EQ(dict.find("ab"), true);
 }
-TEST(DictTrieTests, predict_TEST){
+TEST(DictTrieTests, predict_TEST) {
     DictionaryTrie dict;
-    dict.insert("cat",1);
-    dict.insert("cank",16);
-    dict.insert("caaatkkk",322);
-    dict.insert("dog",2425);
-    dict.insert("fly",322);
-    vector<string> result = dict.predictCompletions("ca",3);
-    ASSERT_EQ(result[0],"caaatkkk");
-    ASSERT_EQ(result[1],"cank");
-    ASSERT_EQ(result[2],"cat");
+    dict.insert("cat", 1);
+    dict.insert("cank", 16);
+    dict.insert("caaatkkk", 322);
+    dict.insert("dog", 2425);
+    dict.insert("fly", 322);
+    vector<string> result = dict.predictCompletions("ca", 3);
+    ASSERT_EQ(result[0], "caaatkkk");
+    ASSERT_EQ(result[1], "cank");
+    ASSERT_EQ(result[2], "cat");
 }
