@@ -241,13 +241,13 @@ void DictionaryTrie::traversal(TierNode* node,
         allTheWords.push_back(
             make_pair(prefix + node->singleChar, node->frequency));
     }
-    if (node->left) {
+    if (node->left != nullptr) {
         traversal(node->left, allTheWords, prefix);
     }
-    if (node->median) {
+    if (node->median != nullptr) {
         traversal(node->median, allTheWords, prefix + node->singleChar);
     }
-    if (node->right) {
+    if (node->right != nullptr) {
         traversal(node->right, allTheWords, prefix);
     }
 }
