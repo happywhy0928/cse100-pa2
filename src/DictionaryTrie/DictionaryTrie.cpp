@@ -170,6 +170,7 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
                 }
                 traversal(curr->median, allTheWords, prefix);
                 sort(allTheWords.begin(), allTheWords.end(), sortByFrequency);
+                break;
             }
             curr = curr->median;
         }
