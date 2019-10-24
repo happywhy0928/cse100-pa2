@@ -41,8 +41,7 @@ class DictionaryTrie {
     };
     TierNode* root;
     void deleteAll(TierNode* node);
-    void traversal(TierNode* node,
-                   vector<std::pair<std::string, int>>* allTheWords,
+    void traversal(TierNode* node, vector<pair<string, int>>& allTheWords,
                    string prefix);
 
   public:

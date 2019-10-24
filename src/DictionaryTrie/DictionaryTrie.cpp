@@ -4,7 +4,15 @@
  * Author:
  */
 #include "DictionaryTrie.hpp"
+#include <algorithm>
 #include <iostream>
+bool sortByFrequency(const pair<string, unsigned int>& x,
+                     const pair<string, unsigned int>& y) {
+    if (x.second == y.second) {
+        return x.first < y.first;
+    } else
+        return x.second > y.second;
+}
 
 /* TODO */
 DictionaryTrie::DictionaryTrie() { root = nullptr; }
@@ -128,90 +136,50 @@ bool DictionaryTrie::find(string word) const {
 /* TODO */
 vector<string> DictionaryTrie::predictCompletions(string prefix,
                                                   unsigned int numCompletions) {
-    std::vector<std::string> to_ret;
-
+    vector<string> to_ret;
+    if (numCompletions == 0) {
+        return to_ret;
+    }
     if (root == NULL)
         return to_ret;
-    else if (prefix.empty() || prefix.length() == 0)
+    else if (prefix.size() == 0)
         return to_ret;
     TierNode* curr = root;
-    int curr_word_length = prefix.length();
-    std::vector<std::pair<std::string, int>> allTheWords;
-    // char curr_char;
-    // mapping the prefix as an array
-    // for (int i = 0; i < curr_word_length; i++) {
-    //   curr_char = (char)prefix[i];
-    // int curr_node_index = char_to_num_map[curr_char];
-    // int curr_node_index = (int curr_char'a')
-    //   curr_trie_node = curr_trie_node->data[curr_node_index];
-    // }
+    // int curr_word_length = prefix.length();
+    vector<pair<string, unsigned int>> allTheWords;
     int i = 0;
-    while (curr && i < prefix.length()) {
-        if (prefix.at(i) < curr->singleChar) {
+    while (curr != nullptr && i < prefix.size()) {
+        if (prefix[i] < curr->singleChar) {
             curr = curr->left;
         }
-        if (prefix.at(i) > curr->singleChar) {
+        if (prefix[i] > curr->singleChar) {
             curr = curr->right;
         }
-        if (prefix.at(i) == curr->singleChar) {
+        if (prefix[i] == curr->singleChar) {
             curr = curr->median;
             i++;
         }
     }
+    // prefix not exist;
     if (!curr) {
         return to_ret;
     }
-
-    //  std::priority_queue<std::pair<TierNode*, std::string>> q;
-
-    /*   std::vector<std::pair<std::string, int>> pairs_list;
-       std::vector<std::pair<std::string, int>> to_ret;
-       std::pair<TierNode*, std::string> curr_pair;
-       curr_pair = {curr_trie_node, prefix};
-       // q.push(curr_pair);
-
-         // Putting the root with the original prefix into the queue
-         while (!q.empty()) {
-             // once its stored in curr pair we pop it from queue
-             curr_pair = q.front();
-             q.pop();
-
-             // reading trie and if its a word/get a word we want to push into
-       list
-             // with frequency
-             if (curr_pair.first->is_leaf == true) {
-                 std::pair<std::string, int> updated_pair;
-                 updated_pair = {curr_pair.second, curr_pair.first->frequency};
-                 pairs_list.push_back(updated_pair);
-             }
-
-             // TODO traverse TST and find words that begin with the prefix and
-             // add to pairs_list , do not worry about frequency
-             for (int i = 0; i <= 26; i++) {
-                 if (curr_pair.first->data[i] == nullptr) continue;
-                 std::pair<TierNode*, std::string> new_pair;
-                 TierNode* new_pair_first = curr_pair.first->data[i];
-                 std::string new_pair_second = curr_pair.second + (char)(97 +
-       i); new_pair = {new_pair_first, new_pair_second}; q.push(new_pair);
-             }
-         }
-       // sorting based on frequency to get only numCompletions of results
-         std::sort(pairs_list.begin(), pairs_list.end(),
-                   [](const std::pair<std::string, int>& p1,
-                      const std::pair<std::string, int>& p2) {
-                       return p1.second > p2.second;
-                   });
-
-       int num_added = 0;
-       int curr_ind = 0;
-       // adding most frequent words to the return list or the final list
-       while (num_added < numCompletions && curr_ind < pairs_list.size()) {
-           to_ret.push_back(pairs_list[curr_ind].first);
-           num_added++;
-           curr_ind++;
-       }
-       return to_ret;  */
-    return {};
+    if (curr->frequency != 0) {
+        allTheWords.push_back(make_pair(prefix, curr->frequency));
+    }
+    traversal(curr->median, allTheWords, prefix);
+    sort(allTheWords.begin(), allTheWords.end(), sortByFrequency);
+    int k = 0;
+    if (allTheWords.size() <= numCompletions) {
+        for (k = 0; k < allTheWords.size(); k++) {
+            to_ret.push_back(allTheWords[k].first);
+        }
+    } else {
+        for (k = 0; k < numCompletions; k++) {
+            to_ret.push_back(allTheWords[k].first);
+        }
+    }
+    return to_ret;
 }
 
 /* TODO */
@@ -239,17 +207,20 @@ void DictionaryTrie::deleteAll(TierNode* node) {
     delete node;
 }
 void DictionaryTrie::traversal(TierNode* node,
-                               vector<std::pair<std::string, int>>* allTheWords,
+                               vector<pair<string, int>>& allTheWords,
                                string prefix) {
-    string newWord = prefix;
-    if (node) {
+    if (node == nullptr) {
         return;
+    }
+    if (node->frequency != 0) {
+        allTheWords.push_back(
+            make_pair(prefix + node->singleChar, node->frequency));
     }
     if (node->left) {
         traversal(node->left, allTheWords, prefix);
     }
     if (node->median) {
-        traversal(node->median, allTheWords, prefix);
+        traversal(node->median, allTheWords, prefix + node->median->singleChar);
     }
     if (node->right) {
         traversal(node->right, allTheWords, prefix);
