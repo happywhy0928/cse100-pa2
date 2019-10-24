@@ -234,22 +234,22 @@ void DictionaryTrie::deleteAll(TierNode* node) {
     delete node;
 }
 void DictionaryTrie::traversal(TierNode* node,
-                               vector<pair<string, int>>& allTheWords,
+                               vector<pair<string, int>>& wordsets,
                                string prefix) {
     if (node == nullptr) {
         return;
     }
     if (node->frequency != 0) {
-        allTheWords.push_back(
+        wordsets.push_back(
             make_pair(prefix + node->singleChar, node->frequency));
     }
     if (node->left != nullptr) {
-        traversal(node->left, allTheWords, prefix);
+        traversal(node->left, wordsets, prefix);
     }
     if (node->median != nullptr) {
-        traversal(node->median, allTheWords, prefix + node->singleChar);
+        traversal(node->median, wordsets, prefix + node->singleChar);
     }
     if (node->right != nullptr) {
-        traversal(node->right, allTheWords, prefix);
+        traversal(node->right, wordsets, prefix);
     }
 }

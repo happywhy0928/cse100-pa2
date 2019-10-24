@@ -29,7 +29,7 @@ class DictionaryTrie {
         //   bool is_word;
         // std::vector<TierNode*> data;
         TierNode(char charter);
-            
+
         // frequency(0), singleChar(singleChar) {}
         //  left(nullptr),
         // median(nullptr),
@@ -37,7 +37,7 @@ class DictionaryTrie {
     };
     TierNode* root;
     void deleteAll(TierNode* node);
-    void traversal(TierNode* node, vector<pair<string, int>>& allTheWords,
+    void traversal(TierNode* node, vector<pair<string, int>>& wordsets,
                    string prefix);
 
   public:
