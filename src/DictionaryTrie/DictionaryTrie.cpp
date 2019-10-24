@@ -8,101 +8,89 @@
 
 /* TODO */
 DictionaryTrie::DictionaryTrie() { root = nullptr; }
-DictionaryTrie::TierNode::TierNode(char singleChar) {
-    singleChar = singleChar;
-    right = 0;
-    left = 0;
-    median = 0;
-    frequency = 0;
-    is_leaf = false;
-}
 /* TODO */
 bool DictionaryTrie::insert(string word, unsigned int freq) {
-    // first check if the word is already in the tree or not
-  if (find(word) == true) {
+    if (find(word) == true) {
         return false;
     }
-    int i = 0;
-    char currLetter = word[i];
+    int count = 0;
+    char currLetter = word[count];
     TierNode* curr = root;
     TierNode* inputNode = new TierNode(currLetter);
     for (;;) {
-        currLetter = word[i];
+        currLetter = word[count];
         inputNode->singleChar = currLetter;
         if (root == nullptr) {
             root = inputNode;
-            i = i + 1;
-            currLetter = word[i];
-            while (i < word.size()) {
-                currLetter = word[i];
-                inputNode->singleChar = currLetter;
-                inputNode->median = inputNode;
+            count = count + 1;
+            while (count < word.size()) {
+                currLetter = word[count];
+                inputNode->median = new TierNode(currLetter);
                 inputNode = inputNode->median;
-                i = i + 1;
-                currLetter = word[i];
+                count++;
             }
             inputNode->frequency = freq;
-            break;
+            return true;
         } else if (inputNode->singleChar < curr->singleChar) {
-            if (curr->left) {
+            if (curr->left != nullptr) {
                 curr = curr->left;
             } else {
                 curr->left = inputNode;
-                i = i + 1;
-                currLetter = word[i];
-                while (i < word.size()) {
-                    currLetter = word[i];
-                    inputNode->singleChar = currLetter;
-                    inputNode->median = inputNode;
-                    inputNode = inputNode->median;
-                    i = i + 1;
-                    currLetter = word[i];
+                curr = curr->left;
+                count = count + 1;
+                while (count < word.size()) {
+                    currLetter = word[count];
+                    curr->median = new TierNode(currLetter);
+                    curr = curr->median;
+                    count++;
                 }
-                inputNode->frequency = freq;
-                break;
+                curr->frequency = freq;
+                return true;
             }
         } else if (inputNode->singleChar > curr->singleChar) {
-            if (curr->right) {
+            if (curr->right != nullptr) {
                 curr = curr->right;
             } else {
-                while (i < word.size()) {
-                    currLetter = word[i];
-                    inputNode->singleChar = currLetter;
-                    inputNode->median = inputNode;
-                    inputNode = inputNode->median;
-                    i = i + 1;
-                    currLetter = word[i];
+                curr->right = inputNode;
+                curr = curr->right;
+                count++;
+                while (count < word.size()) {
+                    currLetter = word[count];
+                    curr->median = new TierNode(currLetter);
+                    curr = curr->median;
+                    count++;
                 }
-                inputNode->frequency = freq;
-                break;
+                curr->frequency = freq;
+                return true;
             }
         } else {
-            if (i == word.size() - 1) {
+            if (count == word.size() - 1) {
                 curr->frequency = freq;
                 return true;
             } else {
-                if (curr->median) {
+                if (curr->median != nullptr) {
                     curr = curr->median;
-                    i = i + 1;
-                    currLetter = word[i];
+                    count++;
                 } else {
-                    while (i < word.size()) {
-                        inputNode->singleChar = currLetter;
-                        curr->median = inputNode;
+                    count++;
+                    currLetter = word[count];
+                    inputNode->singleChar = currLetter;
+                    curr->median = inputNode;
+                    curr = curr->median;
+                    count++;
+                    while (count < word.size()) {
+                        currLetter = word[count];
+                        curr = new TierNode(currLetter);
                         curr = curr->median;
-                        i++;
-                        currLetter = word[i];
+                        count++;
                     }
                     curr->frequency = freq;
-                    break;
+                    return true;
                 }
             }
         }
     }
 }
-   
-/*
- */
 bool DictionaryTrie::find(string word) const {
     if (root == nullptr) {
         return false;
@@ -123,7 +111,7 @@ bool DictionaryTrie::find(string word) const {
                 return false;
             }
         } else {
-            if (i == word.size() - 1 && node->frequency != 0) {
+            if (i == word.length() - 1 && node->frequency != 0) {
                 return true;
             } else {
                 if (node->median) {

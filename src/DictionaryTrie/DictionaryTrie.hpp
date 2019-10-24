@@ -26,15 +26,24 @@ class DictionaryTrie {
         TierNode* left;
         TierNode* median;
         TierNode* right;
-        // bool is_leaf;
+        //   bool is_word;
         // std::vector<TierNode*> data;
-        TierNode(char singleChar) : frequency(0), singleChar(singleChar) {}
+        TierNode(char charter)
+            : frequency(0),
+              singleChar(charter),
+              left(nullptr),
+              median(nullptr),
+              right(nullptr) {}
+        // frequency(0), singleChar(singleChar) {}
         //  left(nullptr),
         // median(nullptr),
         // right(nullptr)
     };
     TierNode* root;
     void deleteAll(TierNode* node);
+    void traversal(TierNode* node,
+                   vector<std::pair<std::string, int>>* allTheWords,
+                   string prefix);
 
   public:
     /* TODO: add function header */
