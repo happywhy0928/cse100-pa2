@@ -147,10 +147,12 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
     if (numCompletions == 0) {
         return to_ret;
     }
-    if (root == nullptr)
+    if (root == nullptr) {
         return to_ret;
-    else if (prefix.size() == 0)
+    }
+    if (prefix.size() == 0) {
         return to_ret;
+    }
     TierNode* curr = root;
     // int curr_word_length = prefix.length();
     vector<pair<string, int>> allTheWords;
