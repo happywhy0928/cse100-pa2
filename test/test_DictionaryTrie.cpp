@@ -40,11 +40,15 @@ TEST(DictTrieTests, insert_TEST) {
 TEST(DictTrieTests, predict_TEST) {
     DictionaryTrie dict;
     dict.insert("cat", 1);
+    dict.insert("ca", 1);
     dict.insert("cank", 16);
     dict.insert("caaatkkk", 322);
     dict.insert("cant", 16);
     dict.insert("dog", 2425);
+    //  dict.insert("doges", 245);
+    dict.insert("flight", 322);
     dict.insert("fly", 322);
+    dict.insert("we", 13);
     vector<string> result = dict.predictCompletions("ca", 3);
     ASSERT_EQ(result[0], "caaatkkk");
     ASSERT_EQ(result[1], "cank");
