@@ -28,12 +28,8 @@ class DictionaryTrie {
         TierNode* right;
         //   bool is_word;
         // std::vector<TierNode*> data;
-        TierNode(char charter)
-            : frequency(0),
-              singleChar(charter),
-              left(nullptr),
-              median(nullptr),
-              right(nullptr) {}
+        TierNode(char charter);
+            
         // frequency(0), singleChar(singleChar) {}
         //  left(nullptr),
         // median(nullptr),

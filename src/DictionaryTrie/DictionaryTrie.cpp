@@ -16,6 +16,13 @@ bool sortByFrequency(const pair<string, unsigned int>& x,
 
 /* TODO */
 DictionaryTrie::DictionaryTrie() { root = nullptr; }
+DictionaryTrie::TierNode::TierNode(char charter) {
+    frequency = 0;
+    singleChar = charter;
+    left = nullptr;
+    median = nullptr;
+    right = nullptr;
+}
 /* TODO */
 bool DictionaryTrie::insert(string word, unsigned int freq) {
     if (find(word) == true) {
@@ -106,20 +113,20 @@ bool DictionaryTrie::find(string word) const {
     TierNode* node = root;
     int i = 0;
     for (;;) {
-        if (word.at(i) < node->singleChar) {
+        if (word[i] < node->singleChar) {
             if (node->left) {
                 node = node->left;
             } else {
                 return false;
             }
-        } else if (word.at(i) > node->singleChar) {
+        } else if (word[i] > node->singleChar) {
             if (node->right) {
                 node = node->right;
             } else {
                 return false;
             }
         } else {
-            if (i == word.length() - 1 && node->frequency != 0) {
+            if (i == word.size() - 1 && node->frequency != 0) {
                 return true;
             } else {
                 if (node->median) {
@@ -157,9 +164,7 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
                 curr = curr->right;
             }
         } else {
-            if (stringCompare == prefix.size()) {
-                stringCompare++;
-            } else {
+            if (++stringCompare == prefix.size()) {
                 if (curr->frequency != 0) {
                     allTheWords.push_back(make_pair(prefix, curr->frequency));
                 }
@@ -176,7 +181,7 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
                 }
                 return to_ret;
             }
-            stringCompare++;
+            curr = curr->median;
         }
     }
     /*// prefix not exist;
