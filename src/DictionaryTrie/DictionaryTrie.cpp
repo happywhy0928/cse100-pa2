@@ -10,8 +10,11 @@ bool sortByFrequency(const pair<string, unsigned int>& x,
                      const pair<string, unsigned int>& y) {
     if (x.second == y.second) {
         return x.first < y.first;
-    } else
-        return x.second > y.second;
+    }
+    if (x.second > y.second) {
+        return true;
+    }
+    return false;
 }
 
 /* TODO */
