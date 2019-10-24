@@ -147,7 +147,7 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
     if (numCompletions == 0) {
         return to_ret;
     }
-    if (root == NULL)
+    if (root == nullptr)
         return to_ret;
     else if (prefix.size() == 0)
         return to_ret;
@@ -170,20 +170,20 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
                 }
                 traversal(curr->median, allTheWords, prefix);
                 sort(allTheWords.begin(), allTheWords.end(), sortByFrequency);
-                if (allTheWords.size() <= numCompletions) {
-                    for (int k = 0; k < allTheWords.size(); k++) {
-                        to_ret.push_back(allTheWords[k].first);
-                    }
-                } else {
-                    for (int k = 0; k < numCompletions; k++) {
-                        to_ret.push_back(allTheWords[k].first);
-                    }
-                }
-                return to_ret;
             }
             curr = curr->median;
         }
     }
+    if (allTheWords.size() < numCompletions) {
+        for (int k = 0; k < allTheWords.size(); k++) {
+            to_ret.push_back(allTheWords[k].first);
+        }
+    } else {
+        for (int k = 0; k < numCompletions; k++) {
+            to_ret.push_back(allTheWords[k].first);
+        }
+    }
+    return to_ret;
     // prefix not exist;
     /*
     if (!curr) {
@@ -204,7 +204,6 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
             to_ret.push_back(allTheWords[k].first);
         }
     }*/
-    return to_ret;
 }
 
 /* TODO */
