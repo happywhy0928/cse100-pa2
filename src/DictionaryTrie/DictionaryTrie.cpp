@@ -153,7 +153,7 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
         return to_ret;
     TierNode* curr = root;
     // int curr_word_length = prefix.length();
-    vector<pair<string, unsigned int>> allTheWords;
+    vector<pair<string,  int>> allTheWords;
     int i = 0;
     while (curr != nullptr && i < prefix.size()) {
         int stringCompare = prefix[i] - curr->singleChar;
@@ -185,6 +185,7 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
         }
     }
     // prefix not exist;
+    /*
     if (!curr) {
         return to_ret;
     }
@@ -202,7 +203,7 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
         for (k = 0; k < numCompletions; k++) {
             to_ret.push_back(allTheWords[k].first);
         }
-    }
+    }*/
     return to_ret;
 }
 
