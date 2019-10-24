@@ -74,8 +74,7 @@ int main(int argc, char** argv) {
         cin >> numberOfCompletions;
 
         // TODO
-        vector<string> res;
-        res = dt->predictCompletions(word, numberOfCompletions);
+        vector<string> res = dt->predictCompletions(word, numberOfCompletions);
         for (int i = 0; i < word.size(); i++) {
             cout << res[i] << endl;
         }

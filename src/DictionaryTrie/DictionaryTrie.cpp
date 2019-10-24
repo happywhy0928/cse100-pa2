@@ -153,7 +153,7 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
         return to_ret;
     TierNode* curr = root;
     // int curr_word_length = prefix.length();
-    vector<pair<string,  int>> allTheWords;
+    vector<pair<string, int>> allTheWords;
     int i = 0;
     while (curr != nullptr && i < prefix.size()) {
         int stringCompare = prefix[i] - curr->singleChar;
@@ -245,7 +245,7 @@ void DictionaryTrie::traversal(TierNode* node,
         traversal(node->left, allTheWords, prefix);
     }
     if (node->median) {
-        traversal(node->median, allTheWords, prefix + node->median->singleChar);
+        traversal(node->median, allTheWords, prefix + node->singleChar);
     }
     if (node->right) {
         traversal(node->right, allTheWords, prefix);
