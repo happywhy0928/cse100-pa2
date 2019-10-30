@@ -40,7 +40,7 @@ class DictionaryTrie {
     void deleteAll(TierNode* node);
     void traversal(TierNode* node, vector<pair<string, int>>& wordsets,
                    string prefix, unsigned int numCompletions);
-    void find1(char check, TierNode* curr, TierNode* result);
+    void find1(char check, TierNode* curr, TierNode*& result);
     void underscoreNode(TierNode* node, queue<pair<TierNode*, string>>& result,
                         string prefix);
 

@@ -235,10 +235,26 @@ std::vector<string> DictionaryTrie::predictUnderscores(
     queue<pair<TierNode*, string>> s;
     // int i = 0;
     TierNode* curr = root;
-    string check;
+    // string check;
     vector<pair<string, int>> allTheWords;
-    if (pattern.at(0) == '_') {
-        underscoreNode(curr, s, check);
+    TierNode* temp = nullptr;
+    int k = 0;
+
+    string before = "";
+    if (pattern.at(k) != '_') {
+        temp = curr;
+        find1(pattern.at(k), curr, temp);
+        if (temp != nullptr) {
+            before += pattern.at(k);
+        }
+        if (temp == nullptr) {
+            return result;
+        }
+        curr = temp->median;
+        k++;
+    }
+    if (pattern.at(k) == '_') {
+        underscoreNode(curr, s, before);
         while (s.empty() != true) {
             pair<TierNode*, string> firstEl;
             firstEl = s.front();
@@ -248,17 +264,18 @@ std::vector<string> DictionaryTrie::predictUnderscores(
                 }
      */
             curr = firstEl.first->median;
-            TierNode* temp = firstEl.first;
-            string prefix = "";
-            prefix += firstEl.first->singleChar;
+            temp = firstEl.first;
+            string prefix = firstEl.second;
+            // prefix += firstEl.first->singleChar;
             string follow = "";
-            int i = 1;
+            // int i = k + 1;
+            int i;
             //     int fault = 1;
-            for (i = 1; i < pattern.length(); i++) {
+            for (i = k + 1; i < pattern.length(); i++) {
                 // curr = firstEl.first;`awq1
                 temp = curr;
                 find1(pattern.at(i), curr, temp);
-                if (temp != nullptr) {
+                if (temp != nullptr && temp->singleChar == pattern.at(i)) {
                     follow += pattern.at(i);
                 }
                 if (temp == nullptr) {
@@ -266,10 +283,6 @@ std::vector<string> DictionaryTrie::predictUnderscores(
                 }
                 curr = temp->median;
             }
-            //  if (temp != nullptr && temp->frequency != 0) {
-            //        allTheWords.push_back(
-            //             make_pair(prefix + follow, temp->frequency));
-            //      }
             if (temp != nullptr) {
                 if (i == pattern.length() && temp->frequency != 0) {
                     allTheWords.push_back(
@@ -278,15 +291,15 @@ std::vector<string> DictionaryTrie::predictUnderscores(
             }
             s.pop();
         }
-        sort(allTheWords.begin(), allTheWords.end(), sortByFrequency);
-        if (allTheWords.size() < numCompletions) {
-            for (int k = 0; k < allTheWords.size(); k++) {
-                result.push_back(allTheWords[k].first);
-            }
-        } else {
-            for (int k = 0; k < numCompletions; k++) {
-                result.push_back(allTheWords[k].first);
-            }
+    }
+    sort(allTheWords.begin(), allTheWords.end(), sortByFrequency);
+    if (allTheWords.size() < numCompletions) {
+        for (int k = 0; k < allTheWords.size(); k++) {
+            result.push_back(allTheWords[k].first);
+        }
+    } else {
+        for (int k = 0; k < numCompletions; k++) {
+            result.push_back(allTheWords[k].first);
         }
     }
     return result;
@@ -385,7 +398,7 @@ void DictionaryTrie::underscoreNode(TierNode* node,
         underscoreNode(curr->right, result, prefix);
     }
 }
-void DictionaryTrie::find1(char check, TierNode* curr, TierNode* result) {
+void DictionaryTrie::find1(char check, TierNode* curr, TierNode*& result) {
     if (curr == nullptr) {
         return;
     }
@@ -396,12 +409,14 @@ void DictionaryTrie::find1(char check, TierNode* curr, TierNode* result) {
             if (node->left) {
                 node = node->left;
             } else {
+                result = nullptr;
                 return;
             }
         } else if (check > node->singleChar) {
             if (node->right) {
                 node = node->right;
             } else {
+                result = nullptr;
                 return;
             }
         } else if (check == node->singleChar) {
