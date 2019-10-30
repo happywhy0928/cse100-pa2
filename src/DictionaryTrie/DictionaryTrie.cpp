@@ -222,7 +222,7 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
 
 /* TODO */
 std::vector<string> DictionaryTrie::predictUnderscores(
-    string pattern, unsigned int numCompletions) {
+   /* string pattern, unsigned int numCompletions) {
     queue<pair<TierNode*, string>> s;
     int i = 0;
     TierNode* curr = root;
@@ -250,7 +250,7 @@ std::vector<string> DictionaryTrie::predictUnderscores(
             }
         }
         vector<pair<string, int>> allTheWords;
-    }
+    } */
     return {};
 }
 
@@ -306,6 +306,7 @@ void DictionaryTrie::traversal(TierNode* node,
         traversal(node->right, wordsets, prefix, numCompletions);
     }
 }
+/*
 void DictionaryTrie::underscoreNode(TierNode* node,
                                     queue<pair<TierNode*, string>>& result,
                                     string prefix) {
@@ -345,3 +346,4 @@ void DictionaryTrie::find1(char check, TierNode* curr, TierNode* result) {
         }
     }
 }
+*/
