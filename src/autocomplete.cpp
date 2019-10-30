@@ -74,7 +74,18 @@ int main(int argc, char** argv) {
         cin >> numberOfCompletions;
 
         // TODO
-        vector<string> res = dt->predictCompletions(word, numberOfCompletions);
+        bool underscore = false;
+        for (int i = 0; i < word.length(); i++) {
+            if (word.at(i) == '_') {
+                underscore = true;
+            }
+        }
+        vector<string> res;
+        if (underscore == false) {
+            res = dt->predictCompletions(word, numberOfCompletions);
+        } else {
+            res = dt->predictUnderscores(word, numberOfCompletions);
+        }
         for (int i = 0; i < res.size(); i++) {
             cout << res[i] << endl;
         }
