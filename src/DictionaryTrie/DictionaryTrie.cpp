@@ -174,17 +174,16 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
                 if (curr->frequency != 0) {
                     allTheWords.push_back(make_pair(prefix, curr->frequency));
                 }
-                //    traversal(curr->median, allTheWords, prefix);
-                //      sort(allTheWords.begin(), allTheWords.end(),
-                //      sortByFrequency);
+                traversal(curr->median, allTheWords, prefix);
+                sort(allTheWords.begin(), allTheWords.end(), sortByFrequency);
                 break;
             }
             curr = curr->median;
             // i++;
         }
     }
-    traversal(curr->median, allTheWords, prefix, numCompletions);
-    sort(allTheWords.begin(), allTheWords.end(), sortByFrequency);
+    // traversal(curr->median, allTheWords, prefix, numCompletions);
+    // sort(allTheWords.begin(), allTheWords.end(), sortByFrequency);
     if (allTheWords.size() < numCompletions) {
         for (int k = 0; k < allTheWords.size(); k++) {
             to_ret.push_back(allTheWords[k].first);
