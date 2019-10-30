@@ -43,6 +43,9 @@ class DictionaryTrie {
     void find1(char check, TierNode* curr, TierNode*& result);
     void underscoreNode(TierNode* node, queue<pair<TierNode*, string>>& result,
                         string prefix);
+    void helperUnder(TierNode* curr, string pattern,
+                     vector<pair<string, int>>& allTheWords, int index,
+                     string before);
 
   public:
     /* TODO: add function header */
