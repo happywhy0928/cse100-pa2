@@ -222,35 +222,100 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
 /* TODO */
 std::vector<string> DictionaryTrie::predictUnderscores(
     string pattern, unsigned int numCompletions) {
-    /*  queue<pair<TierNode*, string>> s;
-      int i = 0;
-      TierNode* curr = root;
-      string check;
-      vector<pair<string, int>> allTheWords;
-      vector<string> result;
-      for (i = 0; i < pattern.length() - 1; i++) {
-          if (pattern.at(i) != '_') {
-              TierNode* temp;
-              find1(pattern.at(i), curr, temp);
-              if (temp != nullptr) {
-                  s.push(make_pair(temp, check + temp->singleChar));
-                  curr = temp->median;
-                  check += temp->singleChar;
-              }
-          } else if (pattern.at(i) == '_') {
-              if (curr != nullptr) {
-                  underscoreNode(curr, s, check);
-              }
-              while (s.empty() != true) {
-                  pair<TierNode*, string> checking = s.front();
-                  curr = checking.first;
-                  check = checking.second;
-                  continue;
-              }
-          }
-          vector<pair<string, int>> allTheWords;
-      } */
-    return {};
+    vector<string> result;
+    if (numCompletions == 0) {
+        return result;
+    }
+    if (root == nullptr) {
+        return result;
+    }
+    if (pattern.size() == 0) {
+        return result;
+    }
+    queue<pair<TierNode*, string>> s;
+    // int i = 0;
+    TierNode* curr = root;
+    string check;
+    vector<pair<string, int>> allTheWords;
+    if (pattern.at(0) == '_') {
+        underscoreNode(curr, s, check);
+        while (s.empty() != true) {
+            pair<TierNode*, string> firstEl;
+            firstEl = s.front();
+            /*    if (find.first->frequency != 0) {
+                    allTheWords.push_back(
+                        make_pair(find.second, find.first->frequency));
+                }
+     */
+            curr = firstEl.first->median;
+            TierNode* temp = firstEl.first;
+            string prefix = "";
+            prefix += firstEl.first->singleChar;
+            string follow = "";
+            int i = 1;
+            //     int fault = 1;
+            for (i = 1; i < pattern.length(); i++) {
+                // curr = firstEl.first;`awq1
+                temp = curr;
+                find1(pattern.at(i), curr, temp);
+                if (temp != nullptr) {
+                    follow += pattern.at(i);
+                }
+                if (temp == nullptr) {
+                    break;
+                }
+                curr = temp->median;
+            }
+            //  if (temp != nullptr && temp->frequency != 0) {
+            //        allTheWords.push_back(
+            //             make_pair(prefix + follow, temp->frequency));
+            //      }
+            if (temp != nullptr) {
+                if (i == pattern.length() && temp->frequency != 0) {
+                    allTheWords.push_back(
+                        make_pair(prefix + follow, temp->frequency));
+                }
+            }
+            s.pop();
+        }
+        sort(allTheWords.begin(), allTheWords.end(), sortByFrequency);
+        if (allTheWords.size() < numCompletions) {
+            for (int k = 0; k < allTheWords.size(); k++) {
+                result.push_back(allTheWords[k].first);
+            }
+        } else {
+            for (int k = 0; k < numCompletions; k++) {
+                result.push_back(allTheWords[k].first);
+            }
+        }
+    }
+    return result;
+
+    /*
+    // for (i = 0; i < pattern.length() - 1; i++) {
+    while (i < pattern.length() - 1) {
+        if (pattern.at(i) != '_') {
+            TierNode* temp;
+            find1(pattern.at(i), curr, temp);
+            if (temp != nullptr) {
+                s.push(make_pair(temp, check + temp->singleChar));
+                curr = temp->median;
+                check += temp->singleChar;
+            }
+        } else if (pattern.at(i) == '_') {
+            if (curr != nullptr) {
+                underscoreNode(curr, s, check);
+            }
+            while (s.empty() != true) {
+                pair<TierNode*, string> checking = s.front();
+                curr = checking.first;
+                check = checking.second;
+                continue;
+            }
+        }
+        vector<pair<string, int>> allTheWords;
+    }
+    return {}; */
 }
 
 /* delete recursively
@@ -305,7 +370,7 @@ void DictionaryTrie::traversal(TierNode* node,
         traversal(node->right, wordsets, prefix, numCompletions);
     }
 }
-/*
+
 void DictionaryTrie::underscoreNode(TierNode* node,
                                     queue<pair<TierNode*, string>>& result,
                                     string prefix) {
@@ -345,4 +410,3 @@ void DictionaryTrie::find1(char check, TierNode* curr, TierNode* result) {
         }
     }
 }
-*/
