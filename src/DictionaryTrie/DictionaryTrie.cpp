@@ -174,7 +174,7 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
                 if (curr->frequency != 0) {
                     allTheWords.push_back(make_pair(prefix, curr->frequency));
                 }
-                traversal(curr->median, allTheWords, prefix);
+                traversal(curr->median, allTheWords, prefix, numCompletions);
                 sort(allTheWords.begin(), allTheWords.end(), sortByFrequency);
                 break;
             }
