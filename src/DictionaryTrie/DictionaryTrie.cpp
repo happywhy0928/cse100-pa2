@@ -222,35 +222,35 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
 
 /* TODO */
 std::vector<string> DictionaryTrie::predictUnderscores(
-   /* string pattern, unsigned int numCompletions) {
-    queue<pair<TierNode*, string>> s;
-    int i = 0;
-    TierNode* curr = root;
-    string check;
-    vector<pair<string, int>> allTheWords;
-    vector<string> result;
-    for (i = 0; i < pattern.length() - 1; i++) {
-        if (pattern.at(i) != '_') {
-            TierNode* temp;
-            find1(pattern.at(i), curr, temp);
-            if (temp != nullptr) {
-                s.push(make_pair(temp, check + temp->singleChar));
-                curr = temp->median;
-                check += temp->singleChar;
-            }
-        } else if (pattern.at(i) == '_') {
-            if (curr != nullptr) {
-                underscoreNode(curr, s, check);
-            }
-            while (s.empty() != true) {
-                pair<TierNode*, string> checking = s.front();
-                curr = checking.first;
-                check = checking.second;
-                continue;
-            }
-        }
-        vector<pair<string, int>> allTheWords;
-    } */
+    string pattern, unsigned int numCompletions) {
+    /*  queue<pair<TierNode*, string>> s;
+      int i = 0;
+      TierNode* curr = root;
+      string check;
+      vector<pair<string, int>> allTheWords;
+      vector<string> result;
+      for (i = 0; i < pattern.length() - 1; i++) {
+          if (pattern.at(i) != '_') {
+              TierNode* temp;
+              find1(pattern.at(i), curr, temp);
+              if (temp != nullptr) {
+                  s.push(make_pair(temp, check + temp->singleChar));
+                  curr = temp->median;
+                  check += temp->singleChar;
+              }
+          } else if (pattern.at(i) == '_') {
+              if (curr != nullptr) {
+                  underscoreNode(curr, s, check);
+              }
+              while (s.empty() != true) {
+                  pair<TierNode*, string> checking = s.front();
+                  curr = checking.first;
+                  check = checking.second;
+                  continue;
+              }
+          }
+          vector<pair<string, int>> allTheWords;
+      } */
     return {};
 }
 
