@@ -184,19 +184,19 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
         }
     }
     traversal(curr->median, allTheWords, prefix, numCompletions);
-    //  sort(allTheWords.begin(), allTheWords.end(), sortByFrequency);
-    /*    if (allTheWords.size() < numCompletions) {
-            for (int k = 0; k < allTheWords.size(); k++) {
-                to_ret.push_back(allTheWords[k].first);
-            }
-        } else {
-            for (int k = 0; k < numCompletions; k++) {
-                to_ret.push_back(allTheWords[k].first);
-            }
-        } */
-    for (int k = 0; k < allTheWords.size(); k++) {
-        to_ret.push_back(allTheWords[k].first);
+    sort(allTheWords.begin(), allTheWords.end(), sortByFrequency);
+    if (allTheWords.size() < numCompletions) {
+        for (int k = 0; k < allTheWords.size(); k++) {
+            to_ret.push_back(allTheWords[k].first);
+        }
+    } else {
+        for (int k = 0; k < numCompletions; k++) {
+            to_ret.push_back(allTheWords[k].first);
+        }
     }
+    /*   for (int k = 0; k < allTheWords.size(); k++) {
+           to_ret.push_back(allTheWords[k].first);
+       } */
     return to_ret;
     // prefix not exist;
     /*
@@ -279,21 +279,21 @@ void DictionaryTrie::traversal(TierNode* node,
         return;
     }
     if (node->frequency != 0) {
-        if (wordsets.size() < numCompletions) {
-            wordsets.push_back(
-                make_pair(prefix + node->singleChar, node->frequency));
-        } else {
-            sort(wordsets.begin(), wordsets.end(), sortByFrequency);
-            pair<string, int> check = wordsets.back();
-            vector<pair<string, int>> compareTwo;
-            compareTwo.push_back(check);
-            compareTwo.push_back(
-                make_pair(prefix + node->singleChar, node->frequency));
-            sort(compareTwo.begin(), compareTwo.end(), sortByFrequency);
-            wordsets.pop_back();
-            check = compareTwo.front();
-            wordsets.push_back(check);
-        }
+        //  if (wordsets.size() < numCompletions) {
+        wordsets.push_back(
+            make_pair(prefix + node->singleChar, node->frequency));
+        /*   } else {
+               sort(wordsets.begin(), wordsets.end(), sortByFrequency);
+               pair<string, int> check = wordsets.back();
+               vector<pair<string, int>> compareTwo;
+               compareTwo.push_back(check);
+               compareTwo.push_back(
+                   make_pair(prefix + node->singleChar, node->frequency));
+               sort(compareTwo.begin(), compareTwo.end(), sortByFrequency);
+               wordsets.pop_back();
+               check = compareTwo.front();
+               wordsets.push_back(check);
+           } */
     }
     if (node->left != nullptr) {
         traversal(node->left, wordsets, prefix, numCompletions);
