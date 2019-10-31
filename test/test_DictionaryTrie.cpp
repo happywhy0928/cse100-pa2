@@ -81,6 +81,7 @@ TEST(DictTrieTests, underscore_TEST) {
 
     // vector<string> result1 = dict.predictUnderscores("_a", 3);
 }
+
 TEST(DictTrieTests, underscore_TEST1) {
     DictionaryTrie dict;
     dict.insert("ca", 13);
@@ -138,4 +139,96 @@ TEST(DictTrieTests, underscore_TEST3) {
     ASSERT_EQ(result1[0], "aaa");
     ASSERT_EQ(result1[1], "daa");
     ASSERT_EQ(result1[2], "caa");
+}
+TEST(DictTrieTests, underscore_TEST6) {
+    DictionaryTrie dict;
+    dict.insert("aaa", 13);
+    dict.insert("aba", 15);
+    dict.insert("aca", 10);
+    //  dict.insert("aaaa", 15);
+    dict.insert("adaa", 10);
+    dict.insert("aaaa", 9);
+    vector<string> result1 = dict.predictUnderscores("__a", 3);
+    ASSERT_EQ(result1[0], "aba");
+    ASSERT_EQ(result1[1], "aaa");
+    ASSERT_EQ(result1[2], "aca");
+}
+
+TEST(DictTrieTests, underscore_TEST7) {
+    DictionaryTrie dict;
+    dict.insert("aaaa", 13);
+    dict.insert("aaba", 15);
+    dict.insert("aaca", 10);
+    //  dict.insert("aaaa", 15);
+    dict.insert("adaa", 10);
+    dict.insert("caa", 13);
+    dict.insert("bac", 14);
+    dict.insert("aac", 15);
+    dict.insert("daa", 14);
+    dict.insert("aaa", 15);
+    dict.insert("faa", 10);
+    vector<string> result1 = dict.predictUnderscores("a__a", 3);
+    ASSERT_EQ(result1[0], "aaba");
+    ASSERT_EQ(result1[1], "aaaa");
+    ASSERT_EQ(result1[2], "aaca");
+}
+
+TEST(DictTrieTests, underscore_TEST8) {
+    DictionaryTrie dict;
+    dict.insert("aaaa", 13);
+    dict.insert("aaba", 15);
+    dict.insert("aaca", 10);
+    //  dict.insert("aaaa", 15);
+    dict.insert("adaa", 10);
+    dict.insert("caa", 13);
+    dict.insert("bac", 14);
+    dict.insert("aac", 15);
+    dict.insert("daa", 14);
+    dict.insert("aaa", 15);
+    dict.insert("faa", 10);
+    dict.insert("aa", 11);
+    dict.insert("ab", 12);
+    dict.insert("ac", 9);
+    dict.insert("cc", 10);
+    vector<string> result1 = dict.predictUnderscores("__", 3);
+    ASSERT_EQ(result1[0], "ab");
+    ASSERT_EQ(result1[1], "aa");
+    ASSERT_EQ(result1[2], "cc");
+}
+TEST(DictTrieTests, underscore_TEST9) {
+    DictionaryTrie dict;
+    dict.insert("aaaa", 13);
+    dict.insert("aaba", 15);
+    dict.insert("aaca", 10);
+    dict.insert("accb", 10);
+    dict.insert("acca", 8);
+    vector<string> result1 = dict.predictUnderscores("a__a", 3);
+    ASSERT_EQ(result1[0], "aaba");
+    ASSERT_EQ(result1[1], "aaaa");
+    ASSERT_EQ(result1[2], "aaca");
+}
+TEST(DictTrieTests, underscore_TEST10) {
+    DictionaryTrie dict;
+    dict.insert("aaaa", 13);
+    dict.insert("aaba", 15);
+    dict.insert("aaca", 10);
+    dict.insert("accb", 10);
+    dict.insert("acca", 8);
+    vector<string> result1 = dict.predictUnderscores("_a_a", 3);
+    ASSERT_EQ(result1[0], "aaba");
+    ASSERT_EQ(result1[1], "aaaa");
+    ASSERT_EQ(result1[2], "aaca");
+}
+
+TEST(DictTrieTests, underscore_TEST11) {
+    DictionaryTrie dict;
+    dict.insert("aaaa", 13);
+    dict.insert("aaba", 15);
+    dict.insert("aaca", 10);
+    dict.insert("accb", 10);
+    dict.insert("acca", 8);
+    vector<string> result1 = dict.predictUnderscores("aa__", 3);
+    ASSERT_EQ(result1[0], "aaba");
+    ASSERT_EQ(result1[1], "aaaa");
+    ASSERT_EQ(result1[2], "aaca");
 }
