@@ -1,5 +1,10 @@
-/*
- * TODO: File Header
+/**
+ * Overview: this file is to let us run the program for autopredict
+ * and underscorePredict
+ * Author:
+ * Hongyu Wang    email:how025@ucsd.edu
+ * Carghin Rekani  email:Crekani@ucsd.edu
+ * Date: Oct 30, 2019
  */
 #include <fstream>
 #include <iostream>
@@ -73,13 +78,15 @@ int main(int argc, char** argv) {
         cout << "Enter a number of completions:" << endl;
         cin >> numberOfCompletions;
 
-        // TODO
+        // check if the input require to predictCompletions or
+        // require to predictUnderscores by checking underscore exist or not
         bool underscore = false;
         for (int i = 0; i < word.length(); i++) {
             if (word.at(i) == '_') {
                 underscore = true;
             }
         }
+        // do the correspondent operation by the check
         vector<string> res;
         if (underscore == false) {
             res = dt->predictCompletions(word, numberOfCompletions);
