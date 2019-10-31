@@ -517,7 +517,9 @@ void DictionaryTrie::helperUnder(TierNode* curr, string pattern,
                 // go into recursion
             } else if (pattern.at(i) == '_') {
                 prefix += follow;
-                helperUnder(curr, pattern, allTheWords, i, prefix);
+                if (curr) {
+                    helperUnder(curr, pattern, allTheWords, i, prefix);
+                }
                 break;
             }
             i++;
@@ -530,7 +532,7 @@ void DictionaryTrie::helperUnder(TierNode* curr, string pattern,
                 }
             }
         }
-        // check next possibility
+        // check50 next possibility
         s.pop();
     }
 }
